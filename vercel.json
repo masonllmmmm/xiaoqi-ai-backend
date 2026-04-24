@@ -1,12 +1,19 @@
 {
   "version": 2,
-  "functions": {
-    "api/app.js": {
-      "runtime": "@vercel/node"
+  "builds": [
+    {
+      "src": "api/app.js",
+      "use": "@vercel/node"
     }
-  },
+  ],
   "routes": [
-    { "src": "/chat", "dest": "api/app.js" },
-    { "src": "/(.*)", "dest": "/public/$1" }
+    {
+      "src": "/chat",
+      "dest": "api/app.js"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/public/$1"
+    }
   ]
 }
