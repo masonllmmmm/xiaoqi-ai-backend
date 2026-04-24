@@ -5,14 +5,20 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-// 测试根路径（直接返回一个字符串，不做任何复杂处理）
-app.get('/', (req, res) => {
-  res.status(200).send('OK');
-});
+// 健康检查
+app.get('/', (req, res) => res.send('OK'));
 
-// 聊天接口（极度简化）
-app.post('/api/chat', (req, res) => {
-  res.status(200).json({ reply: '测试回复' });
+// 聊天接口 - 注意路径要和前端一致
+app.post('/chat', (req, res) => {
+  const { message, userId, mode } = req.body;
+  
+  // 简单回复逻辑
+  let reply = `收到消息：“${message}”（用户ID：${userId}，模式：${mode}）。我是小琪，正在为您服务！`;
+  
+  res.json({
+    success: true,
+    reply: reply
+  });
 });
 
 module.exports = app;
