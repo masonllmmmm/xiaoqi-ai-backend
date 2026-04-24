@@ -1,0 +1,1118 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>小琪智能助手</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --主色: #6366f1;
+            --主色浅: #818cf8;
+            --主色深: #4f46e5;
+            --辅助色: #10b981;
+            --背景: #ffffff;
+            --背景浅: #f8fafc;
+            --背景深: #f1f5f9;
+            --文字: #1e293b;
+            --文字浅: #64748b;
+            --边框: #e2e8f0;
+            --阴影: 0 1px 3px rgba(0, 0, 0, 0.1);
+            --圆角: 8px;
+            --圆角大: 12px;
+            --过渡: all 0.2s ease;
+        }
+
+        [数据主题="暗色"] {
+            --主色: #818cf8;
+            --主色浅: #a5b4fc;
+            --主色深: #6366f1;
+            --背景: #1e293b;
+            --背景浅: #334155;
+            --背景深: #475569;
+            --文字: #f1f5f9;
+            --文字浅: #cbd5e1;
+            --边框: #475569;
+            --阴影: 0 1px 3px rgba(0, 0, 0, 0.3);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, '微软雅黑', sans-serif;
+            background: var(--背景);
+            color: var(--文字);
+            transition: var(--过渡);
+            height: 100vh;
+            overflow: hidden;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        /* 首页 - 清爽设计 */
+        .首页 {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            background: linear-gradient(135deg, var(--主色), var(--主色深));
+            color: white;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .首页标题 {
+            font-size: 2rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .首页副标题 {
+            font-size: 1rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+        }
+
+        .版本选择 {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            width: 100%;
+            max-width: 300px;
+        }
+
+        .版本按钮 {
+            padding: 1rem 1.5rem;
+            background: rgba(255, 255, 255, 0.15);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: var(--圆角大);
+            color: white;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: var(--过渡);
+            backdrop-filter: blur(10px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .版本按钮:hover {
+            background: rgba(255, 255, 255, 0.25);
+            transform: translateY(-2px);
+        }
+
+        .功能简介 {
+            margin-top: 2rem;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: var(--圆角大);
+            padding: 1rem;
+            backdrop-filter: blur(10px);
+            max-width: 300px;
+        }
+
+        .功能简介 h3 {
+            margin-bottom: 0.5rem;
+            font-size: 1rem;
+        }
+
+        .功能列表 {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 0.5rem;
+            text-align: left;
+            font-size: 0.9rem;
+        }
+
+        .功能项 {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        /* 电脑版 - 清爽布局 */
+        .电脑版 {
+            display: none;
+            height: 100vh;
+            flex-direction: row;
+        }
+
+        .电脑侧边栏 {
+            width: 240px;
+            background: var(--背景);
+            border-right: 1px solid var(--边框);
+            display: flex;
+            flex-direction: column;
+            box-shadow: var(--阴影);
+            z-index: 10;
+        }
+
+        .侧边栏头部 {
+            padding: 1rem;
+            background: var(--主色);
+            color: white;
+            text-align: center;
+        }
+
+        .侧边栏标志 {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .侧边栏标志图标 {
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: var(--圆角);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .侧边栏标志文字 {
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+
+        .侧边栏导航 {
+            flex: 1;
+            padding: 1rem 0;
+            overflow-y: auto;
+        }
+
+        .导航项 {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            padding: 0.8rem 1.5rem;
+            cursor: pointer;
+            transition: var(--过渡);
+            color: var(--文字);
+            text-decoration: none;
+            font-size: 0.9rem;
+        }
+
+        .导航项:hover {
+            background: var(--背景浅);
+        }
+
+        .导航项.激活 {
+            background: var(--主色);
+            color: white;
+        }
+
+        .侧边栏底部 {
+            padding: 1rem;
+            border-top: 1px solid var(--边框);
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .侧边栏按钮 {
+            padding: 0.6rem;
+            background: none;
+            border: none;
+            color: var(--文字浅);
+            cursor: pointer;
+            border-radius: var(--圆角);
+            transition: var(--过渡);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        .侧边栏按钮:hover {
+            background: var(--背景浅);
+            color: var(--主色);
+        }
+
+        .电脑主内容 {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            background: var(--背景浅);
+        }
+
+        .电脑对话头部 {
+            padding: 1rem 1.5rem;
+            background: var(--背景);
+            border-bottom: 1px solid var(--边框);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .电脑对话信息 {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+
+        .电脑机器人头像 {
+            width: 36px;
+            height: 36px;
+            background: var(--主色);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        .电脑对话详情 h2 {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 0.1rem;
+        }
+
+        .电脑状态 {
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+            font-size: 0.8rem;
+            color: var(--文字浅);
+        }
+
+        .电脑状态点 {
+            width: 6px;
+            height: 6px;
+            background: var(--辅助色);
+            border-radius: 50%;
+        }
+
+        .电脑对话容器 {
+            flex: 1;
+            padding: 1.5rem;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .电脑输入区域 {
+            padding: 1rem 1.5rem;
+            background: var(--背景);
+            border-top: 1px solid var(--边框);
+        }
+
+        .电脑输入容器 {
+            display: flex;
+            gap: 0.8rem;
+            align-items: flex-end;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .电脑输入包装 {
+            flex: 1;
+            position: relative;
+            background: var(--背景浅);
+            border: 1px solid var(--边框);
+            border-radius: var(--圆角大);
+            padding: 0.8rem 1rem;
+        }
+
+        #电脑用户输入 {
+            width: 100%;
+            border: none;
+            outline: none;
+            background: transparent;
+            color: var(--文字);
+            font-size: 0.9rem;
+            line-height: 1.4;
+            resize: none;
+            max-height: 100px;
+            min-height: 20px;
+            font-family: inherit;
+        }
+
+        .电脑发送按钮 {
+            width: 40px;
+            height: 40px;
+            background: var(--主色);
+            border: none;
+            border-radius: 50%;
+            color: white;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: var(--过渡);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .电脑发送按钮:hover {
+            background: var(--主色深);
+        }
+
+        /* 手机版 - 清爽布局 */
+        .手机版 {
+            display: none;
+            height: 100vh;
+            flex-direction: column;
+            background: var(--背景);
+        }
+
+        .手机顶部栏 {
+            padding: 0.8rem 1rem;
+            background: var(--背景);
+            border-bottom: 1px solid var(--边框);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: sticky;
+            top: 0;
+            z-index: 5;
+        }
+
+        .手机菜单按钮 {
+            width: 36px;
+            height: 36px;
+            background: var(--背景浅);
+            border: none;
+            border-radius: var(--圆角);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            color: var(--文字);
+        }
+
+        .手机对话信息 {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            flex: 1;
+            justify-content: center;
+        }
+
+        .手机机器人头像 {
+            width: 32px;
+            height: 32px;
+            background: var(--主色);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 12px;
+        }
+
+        .手机对话详情 h2 {
+            font-size: 1rem;
+            font-weight: 600;
+        }
+
+        .手机状态 {
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+            font-size: 0.7rem;
+            color: var(--文字浅);
+        }
+
+        .手机状态点 {
+            width: 5px;
+            height: 5px;
+            background: var(--辅助色);
+            border-radius: 50%;
+        }
+
+        .手机内容区 {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .手机侧边栏 {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 280px;
+            height: 100%;
+            background: var(--背景);
+            border-right: 1px solid var(--边框);
+            transform: translateX(-100%);
+            transition: var(--过渡);
+            z-index: 20;
+            overflow-y: auto;
+        }
+
+        .手机侧边栏.激活 {
+            transform: translateX(0);
+        }
+
+        .手机侧边栏头部 {
+            padding: 1rem;
+            background: var(--主色);
+            color: white;
+            text-align: center;
+        }
+
+        .手机侧边栏标志 {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .手机侧边栏标志图标 {
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: var(--圆角);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .手机侧边栏标志文字 {
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+
+        .手机侧边栏导航 {
+            padding: 1rem 0;
+        }
+
+        .手机导航项 {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            padding: 0.8rem 1.5rem;
+            cursor: pointer;
+            transition: var(--过渡);
+            color: var(--文字);
+            text-decoration: none;
+            font-size: 0.9rem;
+        }
+
+        .手机导航项:hover {
+            background: var(--背景浅);
+        }
+
+        .手机导航项.激活 {
+            background: var(--主色);
+            color: white;
+        }
+
+        .手机对话区 {
+            flex: 1;
+            padding: 1rem;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .手机输入区 {
+            padding: 0.8rem 1rem;
+            background: var(--背景);
+            border-top: 1px solid var(--边框);
+            position: sticky;
+            bottom: 0;
+        }
+
+        .手机输入容器 {
+            display: flex;
+            gap: 0.6rem;
+            align-items: flex-end;
+        }
+
+        .手机输入包装 {
+            flex: 1;
+            position: relative;
+            background: var(--背景浅);
+            border: 1px solid var(--边框);
+            border-radius: var(--圆角大);
+            padding: 0.6rem 0.8rem;
+        }
+
+        #手机用户输入 {
+            width: 100%;
+            border: none;
+            outline: none;
+            background: transparent;
+            color: var(--文字);
+            font-size: 0.9rem;
+            line-height: 1.4;
+            resize: none;
+            max-height: 80px;
+            min-height: 18px;
+            font-family: inherit;
+        }
+
+        .手机发送按钮 {
+            width: 36px;
+            height: 36px;
+            background: var(--主色);
+            border: none;
+            border-radius: 50%;
+            color: white;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: var(--过渡);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        /* 通用消息样式 */
+        .消息 {
+            max-width: 85%;
+            padding: 0.8rem 1rem;
+            border-radius: var(--圆角大);
+            line-height: 1.5;
+            position: relative;
+            animation: 消息滑入 0.3s ease;
+            word-wrap: break-word;
+            font-size: 0.9rem;
+        }
+
+        @keyframes 消息滑入 {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .用户消息 {
+            align-self: flex-end;
+            background: var(--主色);
+            color: white;
+            border-bottom-right-radius: var(--圆角);
+        }
+
+        .助手消息 {
+            align-self: flex-start;
+            background: var(--背景);
+            color: var(--文字);
+            border: 1px solid var(--边框);
+            border-bottom-left-radius: var(--圆角);
+        }
+
+        /* 响应式设计 */
+        @media (min-width: 769px) {
+            .电脑版 {
+                display: flex;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .手机版 {
+                display: flex;
+            }
+            
+            .首页标题 {
+                font-size: 1.8rem;
+            }
+            
+            .版本选择 {
+                max-width: 250px;
+            }
+        }
+    </style>
+</head>
+<body 数据主题="亮色">
+    <!-- 首页 -->
+    <div class="首页" id="首页">
+        <h1 class="首页标题">小琪智能助手</h1>
+        <p class="首页副标题">纯中文智能伙伴</p>
+        
+        <div class="版本选择">
+            <button class="版本按钮" onclick="进入版本('电脑版')">
+                <i class="fas fa-desktop"></i>
+                <span>电脑版</span>
+            </button>
+            <button class="版本按钮" onclick="进入版本('手机版')">
+                <i class="fas fa-mobile-alt"></i>
+                <span>手机版</span>
+            </button>
+        </div>
+        
+        <div class="功能简介">
+            <h3>核心能力</h3>
+            <div class="功能列表">
+                <div class="功能项">
+                    <i class="fas fa-comment-dots"></i>
+                    <span>智能对话</span>
+                </div>
+                <div class="功能项">
+                    <i class="fas fa-magic"></i>
+                    <span>创作中心</span>
+                </div>
+                <div class="功能项">
+                    <i class="fas fa-search"></i>
+                    <span>深度分析</span>
+                </div>
+                <div class="功能项">
+                    <i class="fas fa-code"></i>
+                    <span>代码助手</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 电脑版 -->
+    <div class="电脑版" id="电脑版">
+        <div class="电脑侧边栏">
+            <div class="侧边栏头部">
+                <div class="侧边栏标志">
+                    <div class="侧边栏标志图标">琪</div>
+                    <div class="侧边栏标志文字">小琪助手</div>
+                </div>
+            </div>
+            
+            <div class="侧边栏导航">
+                <a class="导航项 激活" onclick="切换标签页('对话')">
+                    <i class="fas fa-comment-dots"></i>
+                    <span>智能对话</span>
+                </a>
+                <a class="导航项" onclick="切换标签页('创作')">
+                    <i class="fas fa-magic"></i>
+                    <span>创作中心</span>
+                </a>
+                <a class="导航项" onclick="切换标签页('分析')">
+                    <i class="fas fa-search"></i>
+                    <span>深度分析</span>
+                </a>
+                <a class="导航项" onclick="切换标签页('代码')">
+                    <i class="fas fa-code"></i>
+                    <span>代码助手</span>
+                </a>
+                <a class="导航项" onclick="切换标签页('文件')">
+                    <i class="fas fa-file-upload"></i>
+                    <span>文件分析</span>
+                </a>
+                <a class="导航项" onclick="切换标签页('搜索')">
+                    <i class="fas fa-globe"></i>
+                    <span>联网搜索</span>
+                </a>
+            </div>
+            
+            <div class="侧边栏底部">
+                <button class="侧边栏按钮" onclick="返回首页()">
+                    <i class="fas fa-home"></i>
+                    <span>返回首页</span>
+                </button>
+                <button class="侧边栏按钮" onclick="切换主题()">
+                    <i class="fas fa-moon"></i>
+                    <span>切换主题</span>
+                </button>
+                <button class="侧边栏按钮" onclick="清空对话()">
+                    <i class="fas fa-trash"></i>
+                    <span>清空对话</span>
+                </button>
+                <button class="侧边栏按钮" onclick="显示帮助()">
+                    <i class="fas fa-question-circle"></i>
+                    <span>帮助</span>
+                </button>
+            </div>
+        </div>
+        
+        <div class="电脑主内容">
+            <div class="电脑对话头部">
+                <div class="电脑对话信息">
+                    <div class="电脑机器人头像">琪</div>
+                    <div class="电脑对话详情">
+                        <h2>小琪智能助手</h2>
+                        <div class="电脑状态">
+                            <div class="电脑状态点"></div>
+                            <span>在线</span>
+                        </div>
+                    </div>
+                </div>
+                <button class="侧边栏按钮" onclick="返回首页()">
+                    <i class="fas fa-home"></i>
+                    <span>首页</span>
+                </button>
+            </div>
+            
+            <div class="电脑对话容器" id="电脑对话容器">
+                <div class="消息 助手消息" id="电脑欢迎消息">
+                    您好！我是小琪智能助手，很高兴为您服务！<br><br>
+                    我可以帮您：<br>
+                    • 智能对话交流<br>
+                    • 创作各类内容<br>
+                    • 分析数据和文件<br>
+                    • 编写和调试代码<br>
+                    • 搜索最新信息<br><br>
+                    请随意和我聊天，或者告诉我您需要什么帮助！
+                </div>
+            </div>
+            
+            <div class="电脑输入区域">
+                <div class="电脑输入容器">
+                    <div class="电脑输入包装">
+                        <textarea 
+                            id="电脑用户输入" 
+                            placeholder="和小琪聊聊吧...（回车发送）" 
+                            rows="1"
+                        ></textarea>
+                    </div>
+                    <button class="电脑发送按钮" onclick="发送消息('电脑')">
+                        <i class="fas fa-paper-plane"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 手机版 -->
+    <div class="手机版" id="手机版">
+        <div class="手机顶部栏">
+            <button class="手机菜单按钮" onclick="切换手机菜单()">
+                <i class="fas fa-bars"></i>
+            </button>
+            <div class="手机对话信息">
+                <div class="手机机器人头像">琪</div>
+                <div class="手机对话详情">
+                    <h2>小琪助手</h2>
+                    <div class="手机状态">
+                        <div class="手机状态点"></div>
+                        <span>在线</span>
+                    </div>
+                </div>
+            </div>
+            <button class="手机菜单按钮" onclick="返回首页()" title="返回首页">
+                <i class="fas fa-home"></i>
+            </button>
+        </div>
+        
+        <div class="手机内容区">
+            <div class="手机侧边栏" id="手机侧边栏">
+                <div class="手机侧边栏头部">
+                    <div class="手机侧边栏标志">
+                        <div class="手机侧边栏标志图标">琪</div>
+                        <div class="手机侧边栏标志文字">小琪助手</div>
+                    </div>
+                </div>
+                
+                <div class="手机侧边栏导航">
+                    <a class="手机导航项 激活" onclick="切换标签页('对话'); 切换手机菜单()">
+                        <i class="fas fa-comment-dots"></i>
+                        <span>对话</span>
+                    </a>
+                    <a class="手机导航项" onclick="切换标签页('创作'); 切换手机菜单()">
+                        <i class="fas fa-magic"></i>
+                        <span>创作</span>
+                    </a>
+                    <a class="手机导航项" onclick="切换标签页('分析'); 切换手机菜单()">
+                        <i class="fas fa-search"></i>
+                        <span>分析</span>
+                    </a>
+                    <a class="手机导航项" onclick="切换标签页('代码'); 切换手机菜单()">
+                        <i class="fas fa-code"></i>
+                        <span>代码</span>
+                    </a>
+                    <a class="手机导航项" onclick="切换标签页('文件'); 切换手机菜单()">
+                        <i class="fas fa-file-upload"></i>
+                        <span>文件</span>
+                    </a>
+                </div>
+                
+                <div style="padding: 1rem;">
+                    <button class="侧边栏按钮" onclick="返回首页(); 切换手机菜单()" style="width: 100%;">
+                        <i class="fas fa-home"></i>
+                        <span>返回首页</span>
+                    </button>
+                </div>
+            </div>
+            
+            <div class="手机对话区" id="手机对话区">
+                <div class="消息 助手消息" id="手机欢迎消息">
+                    您好！我是小琪智能助手，很高兴为您服务！<br><br>
+                    我可以帮您：<br>
+                    • 智能对话交流<br>
+                    • 创作各类内容<br>
+                    • 分析数据和文件<br>
+                    • 编写和调试代码<br>
+                    • 搜索最新信息<br><br>
+                    请随意和我聊天，或者告诉我您需要什么帮助！
+                </div>
+            </div>
+        </div>
+        
+        <div class="手机输入区">
+            <div class="手机输入容器">
+                <div class="手机输入包装">
+                    <textarea 
+                        id="手机用户输入" 
+                        placeholder="和小琪聊聊吧..."
+                        rows="1"
+                    ></textarea>
+                </div>
+                <button class="手机发送按钮" onclick="发送消息('手机')">
+                    <i class="fas fa-paper-plane"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 🚨🚨🚨 唯一需要修改的地方 🚨🚨🚨
+        // 把下面这行替换成你的 Vercel 链接
+        const API_BASE_URL = 'https://你的项目名.vercel.app/api';
+
+        // 全局状态
+        let 当前版本 = '首页';
+        let 当前用户ID = 'user_' + Math.random().toString(36).substring(2, 9);
+        let 当前模式 = 'dialogue';
+        
+        // 返回首页
+        function 返回首页() {
+            document.getElementById('首页').style.display = 'flex';
+            document.getElementById('电脑版').style.display = 'none';
+            document.getElementById('手机版').style.display = 'none';
+            当前版本 = '首页';
+            
+            if (document.getElementById('手机侧边栏')) {
+                document.getElementById('手机侧边栏').classList.remove('激活');
+            }
+        }
+        
+        // 进入指定版本
+        function 进入版本(版本名称) {
+            document.getElementById('首页').style.display = 'none';
+            document.getElementById('电脑版').style.display = 'none';
+            document.getElementById('手机版').style.display = 'none';
+            
+            document.getElementById(版本名称).style.display = 'flex';
+            当前版本 = 版本名称;
+            
+            if (版本名称 === '手机版') {
+                document.getElementById('手机侧边栏').classList.remove('激活');
+            }
+        }
+        
+        // 切换手机菜单
+        function 切换手机菜单() {
+            document.getElementById('手机侧边栏').classList.toggle('激活');
+        }
+        
+        // 切换主题
+        function 切换主题() {
+            const 当前主题 = document.body.getAttribute('数据主题');
+            const 新主题 = 当前主题 === '亮色' ? '暗色' : '亮色';
+            document.body.setAttribute('数据主题', 新主题);
+            localStorage.setItem('主题', 新主题);
+            alert('主题已切换为' + (新主题 === '亮色' ? '亮色模式' : '暗色模式'));
+        }
+        
+        // 清空对话
+        function 清空对话() {
+            if (当前版本 === '电脑版') {
+                const 对话容器 = document.getElementById('电脑对话容器');
+                对话容器.innerHTML = '<div class="消息 助手消息">对话已清空！我是小琪，重新开始为您服务 ✨<br><br>请告诉我您需要什么帮助吧！</div>';
+            } else if (当前版本 === '手机版') {
+                const 对话区 = document.getElementById('手机对话区');
+                对话区.innerHTML = '<div class="消息 助手消息">对话已清空！我是小琪，重新开始为您服务 ✨<br><br>请告诉我您需要什么帮助吧！</div>';
+            }
+        }
+        
+        // 显示帮助
+        function 显示帮助() {
+            const 帮助内容 = `🆘 小琪智能助手使用指南\n\n💬 智能对话：直接输入您想聊的话题\n✨ 创作中心：告诉我您想创作什么内容\n🔍 深度分析：提供数据或问题让我分析\n💻 代码助手：分享代码问题或需求\n📁 文件分析：上传文件让我帮您分析\n🌐 联网搜索：告诉我您想搜索什么信息\n\n🎯 使用技巧：\n• 描述越详细，回答越准确\n• 可以连续对话，我会记住上下文\n• 不满意可以重新提问\n• 支持中英文混合输入\n\n有什么需要帮助的吗？`;
+            
+            if (当前版本 === '电脑版') {
+                const 对话容器 = document.getElementById('电脑对话容器');
+                const 消息元素 = document.createElement('div');
+                消息元素.className = '消息 助手消息';
+                消息元素.innerHTML = 帮助内容.replace(/\n/g, '<br>');
+                对话容器.appendChild(消息元素);
+                对话容器.scrollTop = 对话容器.scrollHeight;
+            } else if (当前版本 === '手机版') {
+                const 对话区 = document.getElementById('手机对话区');
+                const 消息元素 = document.createElement('div');
+                消息元素.className = '消息 助手消息';
+                消息元素.innerHTML = 帮助内容.replace(/\n/g, '<br>');
+                对话区.appendChild(消息元素);
+                对话区.scrollTop = 对话区.scrollHeight;
+            }
+        }
+        
+        // 切换标签页
+        function 切换标签页(标签名称) {
+            if (当前版本 === '电脑版') {
+                document.querySelectorAll('.电脑版 .导航项').forEach(item => item.classList.remove('激活'));
+                event.target.classList.add('激活');
+            } else if (当前版本 === '手机版') {
+                document.querySelectorAll('.手机版 .手机导航项').forEach(item => item.classList.remove('激活'));
+                event.target.classList.add('激活');
+            }
+            
+            // 更新当前模式
+            const 模式映射 = {
+                '对话': 'dialogue',
+                '创作': 'creation',
+                '分析': 'analysis',
+                '代码': 'code',
+                '文件': 'file',
+                '搜索': 'search'
+            };
+            当前模式 = 模式映射[标签名称] || 'dialogue';
+        }
+        
+        // 发送消息
+        async function 发送消息(版本类型) {
+            const 输入框 = document.getElementById(版本类型 === '电脑' ? '电脑用户输入' : '手机用户输入');
+            const 消息内容 = 输入框.value.trim();
+            
+            if (消息内容 === '') return;
+            
+            // 添加用户消息
+            if (版本类型 === '电脑') {
+                const 对话容器 = document.getElementById('电脑对话容器');
+                const 用户消息元素 = document.createElement('div');
+                用户消息元素.className = '消息 用户消息';
+                用户消息元素.innerHTML = 消息内容.replace(/\n/g, '<br>');
+                对话容器.appendChild(用户消息元素);
+            } else {
+                const 对话区 = document.getElementById('手机对话区');
+                const 用户消息元素 = document.createElement('div');
+                用户消息元素.className = '消息 用户消息';
+                用户消息元素.innerHTML = 消息内容.replace(/\n/g, '<br>');
+                对话区.appendChild(用户消息元素);
+            }
+            
+            // 清空输入框
+            输入框.value = '';
+            
+            // 显示"正在输入"状态
+            const 正在输入元素 = document.createElement('div');
+            正在输入元素.className = '消息 助手消息';
+            正在输入元素.innerHTML = '<i class="fas fa-ellipsis-h"></i> 小琪正在思考...';
+            正在输入元素.id = '正在输入';
+            
+            if (版本类型 === '电脑') {
+                document.getElementById('电脑对话容器').appendChild(正在输入元素);
+            } else {
+                document.getElementById('手机对话区').appendChild(正在输入元素);
+            }
+            
+            try {
+                // 调用后端API
+                const 响应 = await fetch(`${API_BASE_URL}/chat`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        message: 消息内容,
+                        userId: 当前用户ID,
+                        mode: 当前模式
+                    })
+                });
+                
+                const 数据 = await 响应.json();
+                
+                // 移除"正在输入"状态
+                const 正在输入 = document.getElementById('正在输入');
+                if (正在输入) 正在输入.remove();
+                
+                if (数据.success) {
+                    // 显示AI回复
+                    const 回复元素 = document.createElement('div');
+                    回复元素.className = '消息 助手消息';
+                    回复元素.innerHTML = 数据.reply.replace(/\n/g, '<br>');
+                    
+                    if (版本类型 === '电脑') {
+                        const 对话容器 = document.getElementById('电脑对话容器');
+                        对话容器.appendChild(回复元素);
+                        对话容器.scrollTop = 对话容器.scrollHeight;
+                    } else {
+                        const 对话区 = document.getElementById('手机对话区');
+                        对话区.appendChild(回复元素);
+                        对话区.scrollTop = 对话区.scrollHeight;
+                    }
+                } else {
+                    throw new Error(数据.error || '请求失败');
+                }
+                
+            } catch (错误) {
+                console.error('发送消息失败:', 错误);
+                
+                // 移除"正在输入"状态
+                const 正在输入 = document.getElementById('正在输入');
+                if (正在输入) 正在输入.remove();
+                
+                // 显示错误消息
+                const 错误元素 = document.createElement('div');
+                错误元素.className = '消息 助手消息';
+                错误元素.innerHTML = '抱歉，我暂时无法回复，请稍后再试。';
+                错误元素.style.background = '#fee';
+                错误元素.style.color = '#c00';
+                
+                if (版本类型 === '电脑') {
+                    const 对话容器 = document.getElementById('电脑对话容器');
+                    对话容器.appendChild(错误元素);
+                } else {
+                    const 对话区 = document.getElementById('手机对话区');
+                    对话区.appendChild(错误元素);
+                }
+            }
+        }
+        
+        // 初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            // 加载主题偏好
+            const 已保存主题 = localStorage.getItem('主题') || '亮色';
+            document.body.setAttribute('数据主题', 已保存主题);
+            
+            // 显示首页
+            document.getElementById('首页').style.display = 'flex';
+            
+            // 绑定回车键事件
+            document.getElementById('电脑用户输入')?.addEventListener('keydown', function(e) {
+                if (e.key === 'Enter' && !e.shiftKey) {
+                    e.preventDefault();
+                    发送消息('电脑');
+                }
+            });
+            
+            document.getElementById('手机用户输入')?.addEventListener('keydown', function(e) {
+                if (e.key === 'Enter' && !e.shiftKey) {
+                    e.preventDefault();
+                    发送消息('手机');
+                }
+            });
+            
+            // 自动调整文本框高度
+            const 调整文本框高度 = (文本框) => {
+                文本框.style.height = 'auto';
+                文本框.style.height = Math.min(文本框.scrollHeight, 文本框.dataset.maxHeight || '100px') + 'px';
+            };
+            
+            document.getElementById('电脑用户输入')?.addEventListener('input', function() {
+                this.dataset.maxHeight = '100px';
+                调整文本框高度(this);
+            });
+            
+            document.getElementById('手机用户输入')?.addEventListener('input', function() {
+                this.dataset.maxHeight = '80px';
+                调整文本框高度(this);
+            });
+        });
+    </script>
+</body>
+</html>
