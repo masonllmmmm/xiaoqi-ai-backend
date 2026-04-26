@@ -1,17 +1,17 @@
 const express = require('express');
 const cors = require('cors');
 
-// Vercel 会自动把 api/index.js 映射为 /api
 module.exports = (req, res) => {
   const app = express();
-
   app.use(cors());
   app.use(express.json());
 
-  // 健康检查
-  app.get('/', (req, res) => res.send('OK'));
+  // ✅ 必须添加：处理根路径的 GET 请求（访问域名时触发）
+  app.get('/', (req, res) => {
+    res.send('小琪 AI 后端运行中！'); // 返回简单文本，证明服务存活
+  });
 
-  // 聊天接口
+  // 你的聊天接口（保持不变）
   app.post('/chat', (req, res) => {
     const { message } = req.body;
     res.json({
@@ -20,6 +20,5 @@ module.exports = (req, res) => {
     });
   });
 
-  // 交给 Vercel
-  app(req, res);
+  app(req, res); // 交给 Vercel 处理请求
 };
